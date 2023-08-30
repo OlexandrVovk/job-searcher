@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+  <title>Фільтр та Інформація</title>
+  <style>
+    .container {
+      display: flex;
+      padding: 20px;
+    }
+
+    .filter {
+      width: 20%;
+      border: 1px solid #ccc;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .info {
+      width: 80%;
+      padding-left: 20px; /* Додатковий відступ від лівого краю */
+    }
+
+    .info-block-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      margin: -10px;
+    }
+
+    .info-block {
+      border: 1px solid #ccc;
+      flex: 0 0 calc(33.33% - 20px);
+      margin: 10px;
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .search-button {
+      margin-top: 10px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="info">
+    <div th:if="${!emptyPageFlag}">
+      <div class="info-block-container">
+        <div th:each="dto : ${dtoList}">
+          <div class="info-block">
+            <h3 th:text="${dto.getJobTitle()}">Рядок 1</h3>
+            <p th:text="${dto.getCompany()}">Тут опис першого рядка інформації.</p>
+            <a th:href="${dto.getUrl()}">Посилання</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter">
+    <h2>Фільтр</h2>
+    <label for="branch">Напрямок:</label>
+    <form th:action="@{/test}" method="get">
+      <select id="branch" name="branch">
+        <option value="java" th:selected="${session.selectedBranch == 'java'}">java</option>
+        <option value="c++" th:selected="${session.selectedBranch == 'c++'}">c/c++</option>
+        <option value="qa" th:selected="${session.selectedBranch == 'qa'}">qa</option>
+        <option value="js" th:selected="${session.selectedBranch == 'js'}">js</option>
+      </select>
+
+      <label for="experience">Досвід роботи:</label>
+      <select id="experience" name="experience">
+        <option value="junior" th:selected="${session.selectedExperience == 'junior'}">junior</option>
+        <option value="middle" th:selected="${session.selectedExperience == 'middle'}">middle</option>
+        <option value="senior" th:selected="${session.selectedExperience == 'senior'}">senior</option>
+      </select>
+
+      <label for="employment">Зайнятість:</label>
+      <select id="employment" name="employment">
+        <option value="office" th:selected="${session.selectedEmployment == 'office'}">office</option>
+        <option value="remote" th:selected="${session.selectedEmployment == 'remote'}">remote</option>
+        <option value="both" th:selected="${session.selectedEmployment == 'both'}">both</option>
+      </select>
+
+      <label for="location">Місце роботи:</label>
+      <select id="location" name="location">
+        <option value="Kyiv">Kyiv</option>
+        <option value="Bila Tserkva">Bila Tserkva</option>
+      </select>
+      <button class="search-button" type="submit">Пошук</button>
+    </form>
+
+  </div>
+</div>
+</body>
+</html>

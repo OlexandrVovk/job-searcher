@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <title>Фільтр та Інформація</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            display: flex;
+            padding: 20px;
+        }
+
+        .filter {
+            width: 20%;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .info {
+            width: 80%;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        .info-block-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            margin: -10px;
+        }
+
+        .text-block-container {
+            height: 100%;
+            width: 100%;
+            display: grid;
+            place-items: center;
+        }
+        .text-block-container h2{
+            color: #525252;
+        }
+
+        .info-block {
+            width: max-content;
+            margin: 10px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-sizing: border-box;
+        }
+
+        .search-button {
+            margin-top: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .search-button:hover {
+            background-color: #0056b3;
+        }
+
+        select, button {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="info">
+        <div th:if="${!emptyPageFlag}">
+            <div class="info-block-container">
+                <div th:each="dto : ${dtoList}">
+                    <div class="info-block">
+                        <h3 th:text="${dto.getJobTitle()}">Рядок 1</h3>
+                        <p th:text="${dto.getCompany()}">Тут опис першого рядка інформації.</p>
+                        <a th:href="${dto.getUrl()}">Посилання</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:if="${emptyPageFlag}" style="height: 100%;">
+            <div class="text-block-container">
+                <h2>Вкажіть данні в фільтрі та тисніть пошук</h2>
+            </div>
+        </div>
+    </div>
+    <div class="filter">
+        <h2>Фільтр</h2>
+        <label for="branch">Напрямок:</label>
+        <form th:action="@{/test}" method="get">
+            <select id="branch" name="branch">
+                <option value="java" th:selected="${session.selectedBranch == 'java'}">java</option>
+                <option value="c++" th:selected="${session.selectedBranch == 'c++'}">c/c++</option>
+                <option value="qa" th:selected="${session.selectedBranch == 'qa'}">qa</option>
+                <option value="js" th:selected="${session.selectedBranch == 'js'}">js</option>
+                <option value="c#" th:selected="${session.selectedBranch == 'c#'}">c#</option>
+                <option value="python" th:selected="${session.selectedBranch == 'python'}">python</option>
+            </select>
+
+            <label for="experience">Рівень навичок:</label>
+            <select id="experience" name="experience">
+                <option value="junior" th:selected="${session.selectedExperience == 'junior'}">junior</option>
+                <option value="middle" th:selected="${session.selectedExperience == 'middle'}">middle</option>
+                <option value="senior" th:selected="${session.selectedExperience == 'senior'}">senior</option>
+            </select>
+
+            <label for="employment">Зайнятість:</label>
+            <select id="employment" name="employment">
+                <option value="office" th:selected="${session.selectedEmployment == 'office'}">office</option>
+                <option value="remote" th:selected="${session.selectedEmployment == 'remote'}">remote</option>
+                <option value="both" th:selected="${session.selectedEmployment == 'both'}">both</option>
+            </select>
+
+            <button class="search-button" type="submit">Пошук</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
